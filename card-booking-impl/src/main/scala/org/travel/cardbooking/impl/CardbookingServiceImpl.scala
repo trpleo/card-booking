@@ -1,15 +1,15 @@
 package org.travel.cardbooking.impl
 
 import org.travel.cardbooking.api
-import org.travel.cardbooking.api.{CardbookingService}
+import org.travel.cardbooking.api.{ CardbookingService }
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.api.broker.Topic
 import com.lightbend.lagom.scaladsl.broker.TopicProducer
-import com.lightbend.lagom.scaladsl.persistence.{EventStreamElement, PersistentEntityRegistry}
+import com.lightbend.lagom.scaladsl.persistence.{ EventStreamElement, PersistentEntityRegistry }
 
 /**
-  * Implementation of the CardbookingService.
-  */
+ * Implementation of the CardbookingService.
+ */
 class CardbookingServiceImpl(persistentEntityRegistry: PersistentEntityRegistry) extends CardbookingService {
 
   override def hello(id: String) = ServiceCall { _ =>
@@ -27,7 +27,6 @@ class CardbookingServiceImpl(persistentEntityRegistry: PersistentEntityRegistry)
     // Tell the entity to use the greeting message specified.
     ref.ask(UseGreetingMessage(request.message))
   }
-
 
   override def greetingsTopic(): Topic[api.GreetingMessageChanged] =
     TopicProducer.singleStreamWithOffset {

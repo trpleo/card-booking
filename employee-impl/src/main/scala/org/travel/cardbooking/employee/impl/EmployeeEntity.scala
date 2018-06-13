@@ -1,6 +1,6 @@
 package org.travel.cardbooking.employee.impl
 
-import com.lightbend.lagom.scaladsl.persistence.{AggregateEvent, AggregateEventTag, PersistentEntity}
+import com.lightbend.lagom.scaladsl.persistence.{ AggregateEvent, AggregateEventTag, PersistentEntity }
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntity.ReplyType
 
 sealed trait EmployeeCommand[R] extends ReplyType[R]

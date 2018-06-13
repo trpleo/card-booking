@@ -2,14 +2,14 @@ package org.travel.cardbookingstream.api
 
 import akka.NotUsed
 import akka.stream.scaladsl.Source
-import com.lightbend.lagom.scaladsl.api.{Service, ServiceCall}
+import com.lightbend.lagom.scaladsl.api.{ Service, ServiceCall }
 
 /**
-  * The card-booking stream interface.
-  *
-  * This describes everything that Lagom needs to know about how to serve and
-  * consume the CardbookingStream service.
-  */
+ * The card-booking stream interface.
+ *
+ * This describes everything that Lagom needs to know about how to serve and
+ * consume the CardbookingStream service.
+ */
 trait CardbookingStreamService extends Service {
 
   def stream: ServiceCall[Source[String, NotUsed], Source[String, NotUsed]]
@@ -19,8 +19,7 @@ trait CardbookingStreamService extends Service {
 
     named("card-booking-stream")
       .withCalls(
-        namedCall("stream", stream)
-      ).withAutoAcl(true)
+        namedCall("stream", stream)).withAutoAcl(true)
   }
 }
 

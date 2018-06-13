@@ -2,17 +2,16 @@ package org.travel.cardbooking.impl
 
 import com.lightbend.lagom.scaladsl.server.LocalServiceLocator
 import com.lightbend.lagom.scaladsl.testkit.ServiceTest
-import org.scalatest.{AsyncWordSpec, BeforeAndAfterAll, Matchers}
+import org.scalatest.{ AsyncWordSpec, BeforeAndAfterAll, Matchers }
 import org.travel.cardbooking.api._
 
 class CardbookingServiceSpec extends AsyncWordSpec with Matchers with BeforeAndAfterAll {
 
   private val server = ServiceTest.startServer(
     ServiceTest.defaultSetup
-      .withCassandra()
-  ) { ctx =>
-    new CardbookingApplication(ctx) with LocalServiceLocator
-  }
+      .withCassandra()) { ctx =>
+      new CardbookingApplication(ctx) with LocalServiceLocator
+    }
 
   val client = server.serviceClient.implement[CardbookingService]
 

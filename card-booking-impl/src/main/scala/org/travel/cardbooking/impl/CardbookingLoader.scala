@@ -25,9 +25,9 @@ class CardbookingLoader extends LagomApplicationLoader {
 
 abstract class CardbookingApplication(context: LagomApplicationContext)
   extends LagomApplication(context)
-    with CassandraPersistenceComponents
-    with LagomKafkaComponents
-    with AhcWSComponents {
+  with CassandraPersistenceComponents
+  with LagomKafkaComponents
+  with AhcWSComponents {
 
   // Bind the service that this server provides
   override lazy val lagomServer = serverFor[CardbookingService](wire[CardbookingServiceImpl])

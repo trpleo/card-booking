@@ -1,6 +1,6 @@
 package org.travel.cardbooking.employee.impl
 
-import com.lightbend.lagom.scaladsl.playjson.{JsonSerializer, JsonSerializerRegistry}
+import com.lightbend.lagom.scaladsl.playjson.{ JsonSerializer, JsonSerializerRegistry }
 
 import scala.collection.immutable
 

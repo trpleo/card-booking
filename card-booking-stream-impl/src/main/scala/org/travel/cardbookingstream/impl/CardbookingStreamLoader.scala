@@ -23,7 +23,7 @@ class CardbookingStreamLoader extends LagomApplicationLoader {
 
 abstract class CardbookingStreamApplication(context: LagomApplicationContext)
   extends LagomApplication(context)
-    with AhcWSComponents {
+  with AhcWSComponents {
 
   // Bind the service that this server provides
   override lazy val lagomServer = serverFor[CardbookingStreamService](wire[CardbookingStreamServiceImpl])

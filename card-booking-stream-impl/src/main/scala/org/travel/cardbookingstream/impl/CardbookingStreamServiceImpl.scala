@@ -7,8 +7,8 @@ import org.travel.cardbooking.api.CardbookingService
 import scala.concurrent.Future
 
 /**
-  * Implementation of the CardbookingStreamService.
-  */
+ * Implementation of the CardbookingStreamService.
+ */
 class CardbookingStreamServiceImpl(cardbookingService: CardbookingService) extends CardbookingStreamService {
   def stream = ServiceCall { hellos =>
     Future.successful(hellos.mapAsync(8)(cardbookingService.hello(_).invoke()))

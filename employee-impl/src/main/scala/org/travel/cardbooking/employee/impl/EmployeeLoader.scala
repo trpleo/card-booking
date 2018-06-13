@@ -2,7 +2,7 @@ package org.travel.cardbooking.employee.impl
 
 import com.lightbend.lagom.scaladsl.broker.kafka.LagomKafkaComponents
 import com.lightbend.lagom.scaladsl.persistence.cassandra.CassandraPersistenceComponents
-import com.lightbend.lagom.scaladsl.server.{LagomApplication, LagomApplicationContext, LagomApplicationLoader}
+import com.lightbend.lagom.scaladsl.server.{ LagomApplication, LagomApplicationContext, LagomApplicationLoader }
 import com.travel.cardbooking.employee.api.EmployeeService
 import play.api.libs.ws.ahc.AhcWSComponents
 import com.softwaremill.macwire._

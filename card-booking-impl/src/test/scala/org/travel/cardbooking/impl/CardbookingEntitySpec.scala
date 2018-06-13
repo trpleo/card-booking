@@ -4,11 +4,12 @@ import akka.actor.ActorSystem
 import akka.testkit.TestKit
 import com.lightbend.lagom.scaladsl.testkit.PersistentEntityTestDriver
 import com.lightbend.lagom.scaladsl.playjson.JsonSerializerRegistry
-import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpec}
+import org.scalatest.{ BeforeAndAfterAll, Matchers, WordSpec }
 
 class CardbookingEntitySpec extends WordSpec with Matchers with BeforeAndAfterAll {
 
-  private val system = ActorSystem("CardbookingEntitySpec",
+  private val system = ActorSystem(
+    "CardbookingEntitySpec",
     JsonSerializerRegistry.actorSystemSetupFor(CardbookingSerializerRegistry))
 
   override protected def afterAll(): Unit = {
