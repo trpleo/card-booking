@@ -6,6 +6,8 @@ version in ThisBuild := "1.0-SNAPSHOT"
 // the Scala version that will be used for cross-compiled libraries
 scalaVersion in ThisBuild := "2.12.4"
 
+val gherkinFramework = new TestFramework("com.waioeka.sbt.runner.CucumberFramework")
+
 val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.0" % "provided"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.4" % Test
 
@@ -36,29 +38,14 @@ lazy val `employee-impl` = (project in file("employee-impl"))
   .settings(
     parallelExecution in Test := true,
     CucumberPlugin.glue := "steps",
-    testFrameworks += framework,
-    testOptions in Test += Tests.Argument(framework,"--glue",""),
-    testOptions in Test += Tests.Argument(framework,"--plugin","html:/tmp/html"),
-    testOptions in Test += Tests.Argument(framework,"--plugin","json:/tmp/json")
+    testFrameworks += gherkinFramework,
+    testOptions in Test += Tests.Argument(gherkinFramework,"--glue",""),
+    testOptions in Test += Tests.Argument(gherkinFramework,"--plugin","html:/tmp/html"),
+    testOptions in Test += Tests.Argument(gherkinFramework,"--plugin","json:/tmp/json")
   )
   .enablePlugins(CucumberPlugin)
   .settings(lagomForkedTestSettings: _*)
   .dependsOn(`employee-api`)
-
-//enablePlugins(CucumberPlugin)
-
-///** can remove pretty printing if running in parallel. */
-//parallelExecution in Test := true
-
-//CucumberPlugin.glue := "steps"
-
-val framework = new TestFramework("com.waioeka.sbt.runner.CucumberFramework")
-//testFrameworks += framework
-
-//// Configure the arguments.
-//testOptions in Test += Tests.Argument(framework,"--glue","")
-//testOptions in Test += Tests.Argument(framework,"--plugin","html:/tmp/html")
-//testOptions in Test += Tests.Argument(framework,"--plugin","json:/tmp/json")
 
 lazy val `card-booking-api` = (project in file("card-booking-api"))
   .settings(
