@@ -10,6 +10,26 @@ val scalaTest = "org.scalatest" %% "scalatest" % "3.0.4" % Test
 lazy val `card-booking` = (project in file("."))
   .aggregate(`card-booking-api`, `card-booking-impl`, `card-booking-stream-api`, `card-booking-stream-impl`)
 
+lazy val `employee-api` = (project in file("employee-api"))
+  .settings(
+    libraryDependencies ++= Seq(
+      lagomScaladslApi
+    )
+  )
+
+lazy val `employee-impl` = (project in file("employee-impl"))
+  .settings(
+    libraryDependencies ++= Seq(
+      lagomScaladslPersistenceCassandra,
+      lagomScaladslKafkaBroker,
+      lagomScaladslTestKit,
+      macwire,
+      scalaTest
+    )
+  )
+  .settings(lagomForkedTestSettings: _*)
+  .dependsOn(`employee-api`)
+
 lazy val `card-booking-api` = (project in file("card-booking-api"))
   .settings(
     libraryDependencies ++= Seq(
