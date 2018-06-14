@@ -4,7 +4,7 @@ import play.api.libs.json._
 
 trait ServiceMessages {
 
-  case class Employee(id: String, name: String)
+  case class Employee(id: String, name: String, email: String, approver: Boolean, active: Boolean)
   object Employee { implicit val format: Format[Employee] = Json.format }
 
   case class Employees(employees: List[Employee])

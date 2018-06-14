@@ -1,13 +1,9 @@
 package org.travel.cardbooking.employee.impl
 
-import java.util.concurrent.TimeUnit
-
 import akka.NotUsed
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
 import com.travel.cardbooking.employee.api.EmployeeService
-
-import scala.concurrent.duration.FiniteDuration
 
 class EmployeeServiceImpl(persistentEntityRegistry: PersistentEntityRegistry) extends EmployeeService {
 
@@ -25,6 +21,10 @@ class EmployeeServiceImpl(persistentEntityRegistry: PersistentEntityRegistry) ex
     //      .refFor[EmployeeEntity](id)
     //      .withAskTimeout(FiniteDuration(1000l, TimeUnit.MILLISECONDS))
     //      .ask(id)
+    ???
+  }
+
+  override def upsertEmployee: ServiceCall[Employee, Employee] = ServiceCall { employee =>
     ???
   }
 }

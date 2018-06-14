@@ -3,18 +3,17 @@ Feature: Adding, removing and modifying employees
   Background:
     Given no employees exist
 
-@currdev
   Scenario Outline: Adding new employee
     Given no employee exists with id <id>
+#   ID should not be specified, if the intention is "create"; or must be specified, if we'd like to update an existing
+#   data. Save === update in this case?
     When I save an employee with id <id>, email <email>, name <name>, can approve
     Then an employee exists with id <id>, email <email>, name <name>, state active, can approve
     Examples:
       | id  | email                  | name      |
       | SE1 | saved.emp@finastra.com | Joe Saved |
-      | SE2 | saved.emp@finastra.com | Joe Saved |
-      | SE3 | saved.emp@finastra.com | Joe Saved |
-      | SE4 | saved.emp@finastra.com | Joe Saved |
 
+@currdev
   Scenario Outline: Modifying existing employee
     Given employee exists with id <id>, email <email>, name <name>, state <state>, <is-able-to> approve
     When I modify the employee <id>'s email <new-email>, name <new-name>, state <new-state>, <new-is-able-to> approve
