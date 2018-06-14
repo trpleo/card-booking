@@ -3,6 +3,7 @@ package framework
 import akka.NotUsed
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import org.scalatest.Assertion
+import org.scalatest.Assertions.fail
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -17,8 +18,8 @@ class World {
     val response = srvCall.invoke(request)
 
     response.onComplete {
-      case Success(response) => history = history.:+(RequestResponse(srvCall, request, Right(response)))
-      case Failure(t) => history = history.:+(RequestResponse(srvCall, request, Left(t)))
+      case Success(response) => history = history :+ RequestResponse(srvCall, request, Right(response))
+      case Failure(t) => history = history :+ RequestResponse(srvCall, request, Left(t))
     }
 
     //    history.zipWithIndex.map { case (data, cnt) => println(s"== HISTORY ==>>>> $cnt: [$data]") }
@@ -26,11 +27,20 @@ class World {
     response
   }
 
-  def checkLastHistoryRegistry[Response](check: RequestResponse[_, _] => Assertion) = {
-    history.lastOption match {
-      case Some(rr) => check(rr)
-      case None => org.scalatest.Assertions.fail("There's no data in World's history.")
+  def defaultFallback[Response](rr: RequestResponse[_, Response]): PartialFunction[scala.Either[scala.Throwable, Response], Assertion] = {
+    case Right(r) => fail(s"No error, but unexpected result. Value: Right($r)")
+    case Left(t) => fail(s"Error. Func: [${rr.serviceCall}] Rq: [${rr.request}] Cause: [${t.getMessage}]")
+  }
+
+  def checkHistoryRegistry[Response](check: RequestResponse[_, Response] => Assertion)(nth: Int = 1): Assertion = {
+    history.takeRight(nth).headOption match {
+      case Some(rr) => check(rr.asInstanceOf[RequestResponse[_, Response]])
+      case None => fail("There's no data in World's history.")
     }
+  }
+
+  def checkHistoryRegistryWithDefaultFallback[Response](pf: PartialFunction[Either[Throwable, Response], Assertion], nth: Int = 1): Assertion = {
+    checkHistoryRegistry[Response] { rr => (pf orElse defaultFallback(rr))(rr.response) }(nth)
   }
 
   // WARNING: immutable.List is thread safe by default. However parallel execution can

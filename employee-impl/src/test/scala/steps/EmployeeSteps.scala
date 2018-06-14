@@ -52,25 +52,29 @@ trait EmployeeSteps extends AsyncWordSpec with ScalaDsl with EN with Matchers wi
   }
 
   Then("""^an employee exists with id (.+), email (.+), name (.+), state active, can approve$""") { (id: String, email: String, name: String) =>
-
-    world.checkLastHistoryRegistry { rr =>
-      rr.response match {
-        case Right(e: client.Employee) =>
-          e.id should ===(id)
-          e.email should ===(email)
-          e.name should ===(name)
-
-        case Right(r) =>
-          fail(s"No error, but unexpected result. Value: Right($r)")
-
-        case Left(t) =>
-          fail(s"Error. Func: [${rr.serviceCall}] Rq: [${rr.request}] Cause: [${t.getMessage}]")
-      }
+    world.checkHistoryRegistryWithDefaultFallback[client.Employee] {
+      case Right(e) =>
+        e.id should ===(id)
+        e.email should ===(email)
+        e.name should ===(name)
     }
   }
 
   Then("""^an employee exists with id (.+), email (.+), name (.+), state (.+), (.+) approve$""") {
     (id: String, email: String, name: String, state: Boolean, approver: Boolean) =>
-      val requestEmp = client.Employee(id, name, email, approver, state)
+      world.checkHistoryRegistryWithDefaultFallback[client.Employee] {
+        case Right(responseEmp) =>
+          responseEmp should ===(client.Employee(id, name, email, approver, state))
+      }
+  }
+
+  Then("""^I got an error with message (.*) with id (.*)$""") { (msg: String, id: String) =>
+    world.checkHistoryRegistryWithDefaultFallback[String] {
+      case Right(s) => ???
+    }
+  }
+
+  Then("""^there is no employee with id (.*)$""") { id: String =>
+    world.checkHistoryRegistryWithDefaultFallback[OptionEmployee] { case Right(oe) => oe should ===(None) }
   }
 }

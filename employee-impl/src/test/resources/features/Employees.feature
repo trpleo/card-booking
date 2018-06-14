@@ -13,7 +13,6 @@ Feature: Adding, removing and modifying employees
       | id  | email                  | name      |
       | SE1 | saved.emp@finastra.com | Joe Saved |
 
-@currdev
   Scenario Outline: Modifying existing employee
     Given employee exists with id <id>, email <email>, name <name>, state <state>, <is-able-to> approve
     When I modify the employee <id>'s email <new-email>, name <new-name>, state <new-state>, <new-is-able-to> approve
@@ -27,7 +26,7 @@ Feature: Adding, removing and modifying employees
       | ME4 | m.joe@old.com | n/a           | Joe Mod | n/a      | active | n/a       | cannot     | can            |
       | ME5 | m.joe@old.com | m.joe@new.com | Joe Mod | Joe New  | active | inactive  | cannot     | can            |
 
-
+@currdev
   Scenario: Modifying non-existing employee
     Given no employee exists with id MN1
     When I modify the employee MN1's email dontcare@finastra.com, name No Name, state active, can approve
