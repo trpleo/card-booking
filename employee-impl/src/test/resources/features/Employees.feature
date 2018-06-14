@@ -11,6 +11,9 @@ Feature: Adding, removing and modifying employees
     Examples:
       | id  | email                  | name      |
       | SE1 | saved.emp@finastra.com | Joe Saved |
+      | SE2 | saved.emp@finastra.com | Joe Saved |
+      | SE3 | saved.emp@finastra.com | Joe Saved |
+      | SE4 | saved.emp@finastra.com | Joe Saved |
 
   Scenario Outline: Modifying existing employee
     Given employee exists with id <id>, email <email>, name <name>, state <state>, <is-able-to> approve

@@ -29,17 +29,17 @@ lazy val `employee-impl` = (project in file("employee-impl"))
       lagomScaladslTestKit,
       macwire,
       scalaTest,
-      "io.cucumber" %% "cucumber-scala" % "2.0.1",
-      "io.cucumber" % "cucumber-core"   % "2.4.0",
-      "io.cucumber" % "cucumber-junit"  % "2.4.0",
-      "io.cucumber" % "cucumber-java8"  % "2.4.0"
+      "io.cucumber" %% "cucumber-scala" % "2.0.1" % Test,
+      "io.cucumber" % "cucumber-core"   % "2.4.0" % Test,
+      "io.cucumber" % "cucumber-junit"  % "2.4.0" % Test,
+      "io.cucumber" % "cucumber-java8"  % "2.4.0" % Test
     )
   )
   .settings(
-    parallelExecution in Test := true,
+    parallelExecution in Test := false,
     CucumberPlugin.glue := "steps",
     testFrameworks += gherkinFramework,
-    testOptions in Test += Tests.Argument(gherkinFramework,"--glue",""),
+    testOptions in Test += Tests.Argument(gherkinFramework,"--glue","classpath:steps"),
     testOptions in Test += Tests.Argument(gherkinFramework,"--plugin","html:/tmp/html"),
     testOptions in Test += Tests.Argument(gherkinFramework,"--plugin","json:/tmp/json")
   )

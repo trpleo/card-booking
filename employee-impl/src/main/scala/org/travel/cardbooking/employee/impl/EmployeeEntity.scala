@@ -19,9 +19,9 @@ class EmployeeEntity extends PersistentEntity {
 
   override type Command = EmployeeCommand[_]
   override type Event = EmployeeEvent
-  override type State = EmployeeState
+  override type State = Option[EmployeeState]
 
-  override def initialState: EmployeeState = ???
+  override def initialState: Option[EmployeeState] = None
 
   override def behavior: Behavior = ???
 }

@@ -3,7 +3,7 @@ package framework
 import scala.language.{ implicitConversions, postfixOps }
 import cucumber.api.scala.{ EN, ScalaDsl }
 
-class AppScalaDslWithEN extends ScalaDsl with EN  {
+class AppScalaDslWithEN extends ScalaDsl with EN {
   trait GherkinGrammarExtension { val postfix: String }
   object API extends GherkinGrammarExtension { val postfix = "api" }
   object WEB extends GherkinGrammarExtension { val postfix = "web" }
