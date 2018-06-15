@@ -44,7 +44,7 @@ class World {
   }
 
   // WARNING: immutable.List is thread safe by default. However parallel execution can
-  //          cause still problems, since there can be race condition between parallelly
+  //          cause still problems, since there can be race condition between parallely
   //          executed assignments.
   //          See: AsyncWordSpec which is used in the tests.
   var history = List[RequestResponse[_, _]]()

@@ -23,5 +23,10 @@ class EmployeeEntity extends PersistentEntity {
 
   override def initialState: Option[EmployeeState] = None
 
-  override def behavior: Behavior = ???
+  override def behavior: Behavior = {
+    case None =>
+      ???
+    case Some(s0) =>
+      ???
+  }
 }

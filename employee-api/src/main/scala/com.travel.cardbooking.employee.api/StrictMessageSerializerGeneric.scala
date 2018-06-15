@@ -12,7 +12,8 @@ import scala.collection.immutable
 class StrictMessageSerializerGeneric[T <: GeneratedMessage with Message[T]](value: GeneratedMessageCompanion[T])
   extends StrictMessageSerializer[T] with GenericSerializers[T] {
 
-  override def serializerForRequest: NegotiatedSerializer[T, ByteString] = serializerJson
+  override def serializerForRequest: NegotiatedSerializer[T, ByteString] =
+    serializerJson
 
   override def deserializer(protocol: MessageProtocol): MessageSerializer.NegotiatedDeserializer[T, ByteString] =
     deserializer(value)

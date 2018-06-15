@@ -2,14 +2,15 @@ package steps
 
 import com.lightbend.lagom.scaladsl.server.LocalServiceLocator
 import com.lightbend.lagom.scaladsl.testkit.ServiceTest
-import com.travel.cardbooking.employee.api.{ EmployeeService, ServiceMessages }
+import com.travel.cardbooking.employee.api.v100.{ Employee, EmployeeEnvilope }
+import com.travel.cardbooking.employee.api.EmployeeService
 import cucumber.api.scala.{ EN, ScalaDsl }
 import framework.World
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{ AsyncWordSpec, Matchers }
 import org.travel.cardbooking.employee.impl.EmployeeApplication
 
-trait EmployeeSteps extends AsyncWordSpec with ScalaDsl with EN with Matchers with ScalaFutures with ServiceMessages {
+trait EmployeeSteps extends AsyncWordSpec with ScalaDsl with EN with Matchers with ScalaFutures {
 
   val server: ServiceTest.TestServer[EmployeeApplication with LocalServiceLocator]
   val client: EmployeeService
@@ -17,7 +18,7 @@ trait EmployeeSteps extends AsyncWordSpec with ScalaDsl with EN with Matchers wi
 
   Given("""^no employees exist$""") { () =>
     world.updateWorld(client.employeesList).map { response =>
-      response.employees.size should ===(0)
+      response.employee.size should ===(0)
     }
   }
 
@@ -27,55 +28,61 @@ trait EmployeeSteps extends AsyncWordSpec with ScalaDsl with EN with Matchers wi
 
   Given("""^employee exists with id (.+), email (.+), name (.+), state (.+), (.+) approve$""") {
     (id: String, email: String, name: String, state: String, approver: Boolean) =>
-      val requestEmp = client.Employee(id, name, email, approver, true)
-      world.updateWorld(client.upsertEmployee, requestEmp).map { emp =>
-        emp.id should not be empty
-        emp should ===(requestEmp)
+      val requestEmp = Employee(Some(id), Some(name), Some(email), approver, true)
+      world.updateWorld(client.upsertEmployee, requestEmp).map { employeeEnvilope =>
+        employeeEnvilope.error should ===(None)
+        employeeEnvilope.employee.get should ===(requestEmp)
       }
   }
 
   When("""^I save an employee with id (.+), email (.+), name (.+), can approve$""") { (id: String, email: String, name: String) =>
-    val requestEmp = client.Employee(id, name, email, true, true)
-    world.updateWorld(client.upsertEmployee, requestEmp).map { emp =>
-      emp.id should not be empty
-      emp should ===(requestEmp)
+    val requestEmp = Employee(Some(id), Some(name), Some(email), true, true)
+    world.updateWorld(client.upsertEmployee, requestEmp).map { employeeEnvilope =>
+      employeeEnvilope.error should ===(None)
+      employeeEnvilope.employee.get should ===(requestEmp)
     }
   }
 
   When("""^I modify the employee (.+)'s email (.+), name (.+), state (.+), (.+) approve$""") {
     (id: String, email: String, name: String, state: Boolean, approver: Boolean) =>
-      val requestEmp = client.Employee(id, name, email, approver, state)
-      world.updateWorld(client.upsertEmployee, requestEmp).map { emp =>
-        emp.id should not be empty
-        emp should ===(requestEmp)
+      val requestEmp = Employee(Some(id), Some(name), Some(email), approver, state)
+      world.updateWorld(client.upsertEmployee, requestEmp).map { employeeEnvilope =>
+        employeeEnvilope.error should ===(None)
+        employeeEnvilope.employee.get should ===(requestEmp)
       }
   }
 
   Then("""^an employee exists with id (.+), email (.+), name (.+), state active, can approve$""") { (id: String, email: String, name: String) =>
-    world.checkHistoryRegistryWithDefaultFallback[client.Employee] {
-      case Right(e) =>
-        e.id should ===(id)
-        e.email should ===(email)
-        e.name should ===(name)
+    world.checkHistoryRegistryWithDefaultFallback[EmployeeEnvilope] {
+      case Right(ee) =>
+        ee.error should ===(None)
+        ee.employee.get.id should ===(Some(id))
+        ee.employee.get.email should ===(Some(email))
+        ee.employee.get.name should ===(Some(name))
     }
   }
 
   Then("""^an employee exists with id (.+), email (.+), name (.+), state (.+), (.+) approve$""") {
     (id: String, email: String, name: String, state: Boolean, approver: Boolean) =>
-      world.checkHistoryRegistryWithDefaultFallback[client.Employee] {
-        case Right(responseEmp) =>
-          responseEmp should ===(client.Employee(id, name, email, approver, state))
+      val requestEmp = Employee(Some(id), Some(name), Some(email), approver, state)
+      world.checkHistoryRegistryWithDefaultFallback[EmployeeEnvilope] {
+        case Right(ee) =>
+          ee.error should ===(None)
+          ee.employee.get should ===(requestEmp)
       }
   }
 
   Then("""^I got an error with message (.*) with id (.*)$""") { (msg: String, id: String) =>
-    world.checkHistoryRegistryWithDefaultFallback[String] {
-      case Right(s) =>
-        ???
+    world.checkHistoryRegistryWithDefaultFallback[EmployeeEnvilope] {
+      case Right(ee) =>
+        ee.error.isDefined should ===(true)
+        ee.error.get.message should ===(msg)
+        ee.error.get.code should ===(id)
+        ee.error.get.employeeId should ===(id)
     }
   }
 
   Then("""^there is no employee with id (.*)$""") { id: String =>
-    world.checkHistoryRegistryWithDefaultFallback[OptionEmployee] { case Right(oe) => oe should ===(None) }
+    world.checkHistoryRegistryWithDefaultFallback[EmployeeEnvilope] { case Right(oe) => oe should ===(None) }
   }
 }

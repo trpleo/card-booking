@@ -6,7 +6,6 @@ object Version {
 
   final val scalaTestVersion = "3.0.4"
 
-//  final val protoVersion = scalapb.compiler.Version.protobufVersion
   final val scalapbVersion = scalapb.compiler.Version.scalapbVersion
 }
 
@@ -28,12 +27,4 @@ object Dependencies {
     "com.thesamet.scalapb" %% "scalapb-json4s" % "0.7.1",
     "com.thesamet.scalapb" %% "scalapb-runtime" % scalapbVersion % "protobuf"
   )
-
-  // compiling *.proto files without protoc (for self contained builds)
-  // see: https://github.com/os72/protoc-jar
-//  val proto = Seq(
-//    "com.github.os72" % "protoc-jar" % protoVersion,
-//    "com.google.protobuf" % "protobuf-java-util" % protoVersion % "test",
-//    "com.google.protobuf" % "protobuf-java" % protoVersion % "protobuf"
-//  )
 }

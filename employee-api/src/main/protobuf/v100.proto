@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package com.travel.cardbooking.employee.api;
+
+import "google/protobuf/wrappers.proto";
+import "scalapb/scalapb.proto";
+
+option java_package = "com.travel.cardbooking.employee.api";
+option java_outer_classname = "ApiMessages";
+
+message Employee {
+    google.protobuf.StringValue id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue email = 3;
+    bool approver = 4;
+    bool active = 5;
+}
+
+message Employees {
+    repeated Employee employees = 1 [(scalapb.field).collection_type="scala.collection.immutable.List"];
+}
+
+message Error {
+    int32 code = 1;
+    string message = 2;
+    google.protobuf.StringValue employeeId = 3;
+}
+
+message EmployeeEnvilope {
+    Employee employee = 1;
+    Error error = 2;
+}
+
+message EmployeesEnvilope {
+    repeated Employee employee = 1 [(scalapb.field).collection_type="scala.collection.immutable.List"];
+    Error error = 2;
+}
