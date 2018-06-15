@@ -7,6 +7,5 @@ import com.travel.cardbooking.employee.api.ServiceMessages
 
 object SerializerRegistry extends JsonSerializerRegistry with ServiceMessages {
 
-  override def serializers: immutable.Seq[JsonSerializer[_]] = List(
-    JsonSerializer[Employee])
+  override def serializers: immutable.Seq[JsonSerializer[_]] = List()
 }

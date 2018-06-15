@@ -3,13 +3,13 @@ package org.travel.cardbooking.employee.impl
 import akka.NotUsed
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntityRegistry
-import com.travel.cardbooking.employee.api.EmployeeService
+import com.travel.cardbooking.employee.api.{ Employee, EmployeeEnvilope, EmployeeService, EmployeesEnvilope }
 
 class EmployeeServiceImpl(persistentEntityRegistry: PersistentEntityRegistry) extends EmployeeService {
 
-  override def employeesList: ServiceCall[NotUsed, Employees] = ServiceCall { _ => ??? }
+  override def employeesList: ServiceCall[NotUsed, EmployeesEnvilope] = ServiceCall { _ => ??? }
 
-  override def getEmployee(id: String): ServiceCall[NotUsed, OptionEmployee] = ServiceCall { _ =>
+  override def getEmployee(id: String): ServiceCall[NotUsed, EmployeeEnvilope] = ServiceCall { _ =>
     //      Try(persistentEntityRegistry
     //        .refFor[EmployeeEntity](id)
     //        .withAskTimeout(FiniteDuration(1000l, TimeUnit.MILLISECONDS))
@@ -24,7 +24,7 @@ class EmployeeServiceImpl(persistentEntityRegistry: PersistentEntityRegistry) ex
     ???
   }
 
-  override def upsertEmployee: ServiceCall[Employee, Employee] = ServiceCall { employee =>
+  override def upsertEmployee: ServiceCall[Employee, EmployeeEnvilope] = ServiceCall { employee =>
     ???
   }
 }

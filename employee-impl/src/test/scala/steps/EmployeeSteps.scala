@@ -70,7 +70,8 @@ trait EmployeeSteps extends AsyncWordSpec with ScalaDsl with EN with Matchers wi
 
   Then("""^I got an error with message (.*) with id (.*)$""") { (msg: String, id: String) =>
     world.checkHistoryRegistryWithDefaultFallback[String] {
-      case Right(s) => ???
+      case Right(s) =>
+        ???
     }
   }
 
